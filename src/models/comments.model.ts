@@ -4,7 +4,7 @@ import { Document } from "mongoose";
 @Schema()
 export class Comment extends Document {
     @Prop({ required: true })
-    postId: string
+    postId: number
 
     @Prop({ required: true })
     author: string

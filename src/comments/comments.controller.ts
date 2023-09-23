@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Param } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, ParseIntPipe } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { Comment } from 'src/models/comments.model';
 
@@ -12,7 +12,7 @@ export class CommentsController {
     }
 
     @Get(':postId')
-    async findAll(@Param('postId') postId: string): Promise<Comment[]> {
+    async findAll(@Param('postId', ParseIntPipe) postId: number): Promise<Comment[]> {
         return this.commentService.findAll(postId)
     }
 }

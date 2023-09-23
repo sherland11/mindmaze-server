@@ -10,6 +10,7 @@ import { Comment, CommentSchema } from './models/comments.model';
   imports: [
     MongooseModule.forRoot('mongodb+srv://vancklies:n7ggQJXxbG2SMCJ8@angularpractice.ejm51gr.mongodb.net/?retryWrites=true&w=majority'),
     MongooseModule.forFeature([{ name: Comment.name, schema: CommentSchema }]),
+    
   ],
   controllers: [AppController, CommentsController],
   providers: [AppService, CommentsService],
