@@ -7,20 +7,35 @@ import { User } from 'src/models/user.model';
 export class AuthService {
     constructor(private userService: UsersService, private jwtService: JwtService) {}
 
-    async register({ username, password }): Promise<User> {
-        const existingUser = await this.userService.findByUsername(username)
-        if (existingUser) {
-            throw new Error('Пользователя с таким именем уже существует')
+    async register({ username, password }): Promise<any> {
+        try {
+            const existingUser = await this.userService.findByUsername(username);
+            if (existingUser) {
+                return { success: false, message: 'Пользователь с таким именем уже существует' };
+            }
+    
+            const user = await this.userService.createUser(username, password);
+            return { success: true, message: 'Пользователь успешно зарегистрирован', user };
+        } catch (error) {
+            return { success: false, message: 'Ошибка при регистрации' };
         }
-
-        const user = await this.userService.createUser(username, password)
-        return user
     }
 
     async login(user: User): Promise<any> {
-        const payload = { username: user.username, sub: user._id }
-        return {
-            access_token: this.jwtService.sign(payload),
+        try {
+            const payload = { username: user.username, sub: user._id };
+            const access_token = this.jwtService.sign(payload);
+            return {
+                success: true,
+                message: 'Вход выполнен успешно',
+                access_token,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                message: 'Ошибка при входе',
+                error: error.message, // Можете добавить дополнительные детали ошибки, если необходимо
+            };
         }
     }
 }
