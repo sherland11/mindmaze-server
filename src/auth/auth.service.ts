@@ -15,7 +15,7 @@ export class AuthService {
             }
     
             const user = await this.userService.createUser(username, password);
-            return { success: true, message: 'Пользователь успешно зарегистрирован', user };
+            return { success: true, message: 'Пользователь успешно зарегистрирован', user: user };
         } catch (error) {
             return { success: false, message: 'Ошибка при регистрации' };
         }
@@ -29,12 +29,13 @@ export class AuthService {
                 success: true,
                 message: 'Вход выполнен успешно',
                 access_token,
+                user: { _id: user._id, username: user.username },
             };
         } catch (error) {
             return {
                 success: false,
                 message: 'Ошибка при входе',
-                error: error.message, // Можете добавить дополнительные детали ошибки, если необходимо
+                error: error.message,
             };
         }
     }
