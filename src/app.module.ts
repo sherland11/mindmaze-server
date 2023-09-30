@@ -8,6 +8,7 @@ import { Comment, CommentSchema } from './models/comments.model';
 import { UsersModule } from './users/users.module';
 import { CommentsModule } from './comments/comments.module';
 import { AuthModule } from './auth/auth.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     CommentsModule,
     AuthModule,
+    ProfileModule,
     
   ],
   controllers: [AppController],
