@@ -9,6 +9,8 @@ import { UsersModule } from './users/users.module';
 import { CommentsModule } from './comments/comments.module';
 import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
+import { PostsResolver } from './posts/posts.resolver';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
   imports: [
@@ -17,9 +19,10 @@ import { ProfileModule } from './profile/profile.module';
     CommentsModule,
     AuthModule,
     ProfileModule,
+    PostsModule,
     
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PostsResolver],
 })
 export class AppModule {}
