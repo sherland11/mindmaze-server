@@ -12,7 +12,7 @@ export class CommentsService {
         return await comment.save()
     }
 
-    async findAll(postId: number): Promise<Comment[]> {
+    async findAll(postId: string): Promise<Comment[]> {
         return this.commentModel.find({ postId }).exec()
     }
 }
