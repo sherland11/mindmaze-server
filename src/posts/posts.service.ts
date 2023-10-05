@@ -23,4 +23,20 @@ export class PostsService {
             throw new NotFoundException('Пост не найден')
         }
     }
+
+    async updatePost(postId: string, postData: Post): Promise<Post> {
+        const updatedPost = await this.postModel.findByIdAndUpdate(postId, postData, { new: true }).exec()
+        if (!updatedPost) {
+            console.log('Post not found')
+        }
+
+        return updatedPost
+    }
+
+    async deletePost(postId: string): Promise<void> {
+        const result = await this.postModel.findByIdAndDelete(postId).exec()
+        if (!result) {
+            console.log('Post not found')
+        }
+    }
 }
