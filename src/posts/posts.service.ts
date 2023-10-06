@@ -16,6 +16,11 @@ export class PostsService {
         return await this.postModel.find().exec()
     }
 
+    async searchPosts(searchTerm: string): Promise<Post[]> {
+        const regex = new RegExp(searchTerm, 'i')
+        return this.postModel.find({ $or: [{ title: regex }, { content: regex }] }).exec()
+    }
+
     async getPostById(id: number): Promise<Post | undefined> {
         try {
             return await this.postModel.findById(id).exec()

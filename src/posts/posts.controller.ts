@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, Delete, Query } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Post as PostModel } from 'src/models/post.model';
 
@@ -14,7 +14,12 @@ export class PostsController {
     @Get()
     async getAllPosts(): Promise<PostModel[]> {
         return await this.postsService.getAllPosts()
-    } 
+    }
+    
+    @Get('search')
+    async searchPosts(@Query('searchTerm') searchTerm: string): Promise<PostModel[]> {
+        return this.postsService.searchPosts(searchTerm)
+    }
 
     @Get(':id')
     async getPostById(@Param('id') id: number): Promise<PostModel | undefined> {
