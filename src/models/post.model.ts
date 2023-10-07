@@ -15,7 +15,13 @@ export class Post extends Document {
     content: string
 
     @Prop()
+    topic: string
+
+    @Prop()
     date: Date
+
+    @Prop()
+    username: string
 
     @Prop({ type: [{ type: ObjectId, ref: 'Comment' }] })
     comments: Comment[];

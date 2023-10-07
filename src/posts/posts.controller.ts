@@ -17,8 +17,11 @@ export class PostsController {
     }
     
     @Get('search')
-    async searchPosts(@Query('searchTerm') searchTerm: string): Promise<PostModel[]> {
-        return this.postsService.searchPosts(searchTerm)
+    async searchPosts(
+        @Query('searchTerm') searchTerm: string,
+        @Query('topic') topic: string
+    ): Promise<PostModel[]> {
+        return this.postsService.searchPosts(searchTerm, topic)
     }
 
     @Get(':id')
