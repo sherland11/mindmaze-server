@@ -5,8 +5,6 @@ import { Comment } from "./comments.model";
 
 @Schema()
 export class Post extends Document {
-    @Prop()
-    id: number
 
     @Prop()
     title: string
@@ -22,6 +20,9 @@ export class Post extends Document {
 
     @Prop()
     username: string
+
+    @Prop()
+    likes: string[]
 
     @Prop({ type: [{ type: ObjectId, ref: 'Comment' }] })
     comments: Comment[];
