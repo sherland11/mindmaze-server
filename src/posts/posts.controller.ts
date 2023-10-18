@@ -1,15 +1,23 @@
-import { Controller, Post, Body, Get, Param, Put, Delete, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, Delete, Query, UseInterceptors, UploadedFile, Res } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Post as PostModel } from 'src/models/post.model';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { multerConfig } from 'multer.congig';
+import { Response } from 'express';
 
 @Controller('posts')
 export class PostsController {
     constructor(private readonly postsService: PostsService) {}
 
     @Post()
-    async create(@Body() post: PostModel): Promise<PostModel> {
-        return this.postsService.create(post)
+    @UseInterceptors(FileInterceptor('image', multerConfig))
+    async create(@Body() post: PostModel, @UploadedFile() file: Express.Multer.File): Promise<PostModel> {
+    console.log(file)
+    if (file) {
+        post.image = file.path;
     }
+    return this.postsService.create(post);
+}
 
     @Get()
     async getAllPosts(): Promise<PostModel[]> {
@@ -27,6 +35,11 @@ export class PostsController {
     @Get(':id')
     async getPostById(@Param('id') id: number): Promise<PostModel | undefined> {
         return await this.postsService.getPostById(id)
+    }
+
+    @Get('images/uploads/:imagePath')
+    async serveImage(@Param('imagePath') image: string, @Res() res: Response) {
+        return res.sendFile(image, { root: 'uploads' })
     }
 
     @Put(':id')

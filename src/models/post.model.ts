@@ -24,6 +24,9 @@ export class Post extends Document {
     @Prop()
     likes: string[]
 
+    @Prop()
+    image: string
+
     @Prop({ type: [{ type: ObjectId, ref: 'Comment' }] })
     comments: Comment[];
 }
