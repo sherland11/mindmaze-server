@@ -43,8 +43,12 @@ export class PostsController {
     }
 
     @Put(':id')
-    async updatePost(@Param('id') postId: string, @Body() postData: PostModel): Promise<PostModel> {
-        return this.postsService.updatePost(postId, postData)
+    @UseInterceptors(FileInterceptor('image', multerConfig))
+    async updatePost(@Param('id') postId: string, @Body() post: PostModel, @UploadedFile() file: Express.Multer.File): Promise<PostModel> {
+        if (file) {
+            post.image = file.path;
+        }
+        return this.postsService.updatePost(postId, post);
     }
 
     @Delete(':id')

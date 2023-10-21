@@ -16,7 +16,7 @@ export class Post extends Document {
     topic: string
 
     @Prop()
-    date: Date
+    date: string
 
     @Prop()
     username: string
