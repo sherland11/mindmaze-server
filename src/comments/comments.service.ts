@@ -15,4 +15,8 @@ export class CommentsService {
     async findAll(postId: string): Promise<Comment[]> {
         return this.commentModel.find({ postId }).exec()
     }
+
+    async findByUsername(username: string): Promise<Comment[]> {
+        return this.commentModel.find({ author: username }).exec()
+    }
 }

@@ -15,4 +15,9 @@ export class CommentsController {
     async findAll(@Param('postId') postId: string): Promise<Comment[]> {
         return this.commentService.findAll(postId)
     }
+
+    @Get('user/:username')
+    async findByUsername(@Param('username') username: string): Promise<Comment[]> {
+        return this.commentService.findByUsername(username)
+    }
 }
