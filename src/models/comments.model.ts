@@ -7,6 +7,9 @@ export class Comment extends Document {
     postId: string
 
     @Prop({ required: true })
+    postTitle: string
+
+    @Prop({ required: true })
     author: string
 
     @Prop({ required: true })

@@ -23,12 +23,16 @@ export class PostsService {
         return this.postModel.find(filter).exec()
     }
 
-    async getPostById(id: number): Promise<Post | undefined> {
+    async getPostById(id: string): Promise<Post | undefined> {
         try {
             return await this.postModel.findById(id).exec()
         } catch (error) {
             throw new NotFoundException('Пост не найден')
         }
+    }
+
+    async getPostTitle(postId: string): Promise<string> {
+        return (await this.postModel.findById(postId)).title
     }
 
     async updatePost(postId: string, postData: Post): Promise<Post> {

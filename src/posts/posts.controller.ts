@@ -33,8 +33,13 @@ export class PostsController {
     }
 
     @Get(':id')
-    async getPostById(@Param('id') id: number): Promise<PostModel | undefined> {
+    async getPostById(@Param('id') id: string): Promise<PostModel | undefined> {
         return await this.postsService.getPostById(id)
+    }
+
+    @Get('title/:id')
+    async getPostTitle(@Param('id') id: string): Promise<string> {
+        return await this.postsService.getPostTitle(id)
     }
 
     @Get('images/uploads/:imagePath')
