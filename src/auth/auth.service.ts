@@ -13,9 +13,16 @@ export class AuthService {
             if (existingUser) {
                 return { success: false, message: 'Пользователь с таким именем уже существует' };
             }
-    
+            
             const user = await this.userService.createUser(username, password);
-            return { success: true, message: 'Пользователь успешно зарегистрирован', user: user };
+            const payload = { username: user.username, sub: user._id };
+            const access_token = this.jwtService.sign(payload);
+            return { 
+                success: true, 
+                message: 'Пользователь успешно зарегистрирован', 
+                user: user, 
+                access_token: access_token 
+            };
         } catch (error) {
             return { success: false, message: 'Ошибка при регистрации' };
         }
