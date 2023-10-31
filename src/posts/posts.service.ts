@@ -16,11 +16,24 @@ export class PostsService {
         return await this.postModel.find().exec()
     }
 
-    async searchPosts(searchTerm: string, topic: string): Promise<Post[]> {
+    async searchPosts(searchTerm: string, topic: string, sortBy: string): Promise<Post[]> {
         const regex = new RegExp(searchTerm, 'i')
         const filter: any = { $or: [{ title: regex }, { content: regex }] }
+        
         if (topic) filter.topic = topic
-        return this.postModel.find(filter).exec()
+        
+        let posts = this.postModel.find(filter)
+
+        switch (sortBy) {
+            case 'popular':
+                posts = posts.sort({ likes: -1 })
+                break
+            case 'new':
+                posts = posts.sort({ date: 1 })
+        }
+
+        return posts.exec()
+
     }
 
     async getPostById(id: string): Promise<Post | undefined> {

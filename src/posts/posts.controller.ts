@@ -4,6 +4,7 @@ import { Post as PostModel } from 'src/models/post.model';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from 'multer.congig';
 import { Response } from 'express';
+import { writeFileSync } from 'fs'
 
 @Controller('posts')
 export class PostsController {
@@ -12,12 +13,24 @@ export class PostsController {
     @Post()
     @UseInterceptors(FileInterceptor('image', multerConfig))
     async create(@Body() post: PostModel, @UploadedFile() file: Express.Multer.File): Promise<PostModel> {
-    console.log(file)
-    if (file) {
-        post.image = file.path;
+        console.log(file)
+        if (file) {
+            post.image = file.path;
+        }
+        return this.postsService.create(post);
     }
-    return this.postsService.create(post);
-}
+
+    @Post('react-native')
+    async createNative(@Body() post: PostModel): Promise<PostModel> {
+        if (post.image) {
+            const uniqueFileName = Date.now().toString() + '.jpg'
+            const filePath = `../uploads/${uniqueFileName}`
+            const base64Data = post.image.replace(/^data:image\/jpeg;base64,/, '')
+            writeFileSync(filePath, base64Data, 'base64')
+            post.image = `uploads/${uniqueFileName}`
+        }  
+        return this.postsService.create(post) 
+    }
 
     @Get()
     async getAllPosts(): Promise<PostModel[]> {
@@ -27,9 +40,10 @@ export class PostsController {
     @Get('search')
     async searchPosts(
         @Query('searchTerm') searchTerm: string,
-        @Query('topic') topic: string
+        @Query('topic') topic: string,
+        @Query('sortBy') sortBy: string,
     ): Promise<PostModel[]> {
-        return this.postsService.searchPosts(searchTerm, topic)
+        return this.postsService.searchPosts(searchTerm, topic, sortBy)
     }
 
     @Get(':id')
