@@ -29,7 +29,7 @@ export class PostsService {
                 posts = posts.sort({ likes: -1 })
                 break
             case 'new':
-                posts = posts.sort({ date: 1 })
+                posts = posts.sort({ date: -1 })
         }
 
         return posts.exec()

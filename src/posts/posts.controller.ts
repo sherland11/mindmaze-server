@@ -20,18 +20,6 @@ export class PostsController {
         return this.postsService.create(post);
     }
 
-    @Post('react-native')
-    async createNative(@Body() post: PostModel): Promise<PostModel> {
-        if (post.image) {
-            const uniqueFileName = Date.now().toString() + '.jpg'
-            const filePath = `../uploads/${uniqueFileName}`
-            const base64Data = post.image.replace(/^data:image\/jpeg;base64,/, '')
-            writeFileSync(filePath, base64Data, 'base64')
-            post.image = `uploads/${uniqueFileName}`
-        }  
-        return this.postsService.create(post) 
-    }
-
     @Get()
     async getAllPosts(): Promise<PostModel[]> {
         return await this.postsService.getAllPosts()
