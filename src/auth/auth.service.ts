@@ -7,14 +7,14 @@ import { User } from 'src/models/user.model';
 export class AuthService {
     constructor(private userService: UsersService, private jwtService: JwtService) {}
 
-    async register({ username, password }): Promise<any> {
+    async register({ username, password }, avatar: string): Promise<any> {
         try {
             const existingUser = await this.userService.findByUsername(username);
             if (existingUser) {
                 return { success: false, message: 'Пользователь с таким именем уже существует' };
             }
             
-            const user = await this.userService.createUser(username, password);
+            const user = await this.userService.createUser(username, password, avatar);
             const payload = { username: user.username, sub: user._id };
             const access_token = this.jwtService.sign(payload);
             return { 
@@ -30,13 +30,14 @@ export class AuthService {
 
     async login(user: User): Promise<any> {
         try {
+            const userData = await this.userService.findByUsername(user.username)
             const payload = { username: user.username, sub: user._id };
             const access_token = this.jwtService.sign(payload);
             return {
                 success: true,
                 message: 'Вход выполнен успешно',
                 access_token,
-                user: { _id: user._id, username: user.username },
+                user: userData, 
             };
         } catch (error) {
             return {

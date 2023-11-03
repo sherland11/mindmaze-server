@@ -4,7 +4,6 @@ import { Post as PostModel } from 'src/models/post.model';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from 'multer.congig';
 import { Response } from 'express';
-import { writeFileSync } from 'fs'
 
 @Controller('posts')
 export class PostsController {

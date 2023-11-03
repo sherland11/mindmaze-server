@@ -7,8 +7,8 @@ import { User } from 'src/models/user.model';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async createUser(username: string, password: string): Promise<User> {
-    const user = new this.userModel({ username, password });
+  async createUser(username: string, password: string, avatar: string): Promise<User> {
+    const user = new this.userModel({ username, password, avatar });
     return user.save();
   }
 
