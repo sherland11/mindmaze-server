@@ -44,6 +44,10 @@ export class PostsService {
         }
     }
 
+    async getPostByUsername(username: string): Promise<Post[]> {
+        return await this.postModel.find({ username: username })
+    }
+
     async getPostTitle(postId: string): Promise<string> {
         return (await this.postModel.findById(postId)).title
     }

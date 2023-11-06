@@ -48,6 +48,11 @@ export class PostsController {
         return res.sendFile(image, { root: 'uploads' })
     }
 
+    @Get('username/:username')
+    async getPostByUsername(@Param('username') username: string) {
+        return await this.postsService
+    }
+
     @Put(':id')
     @UseInterceptors(FileInterceptor('image', multerConfig))
     async updatePost(@Param('id') postId: string, @Body() post: PostModel, @UploadedFile() file: Express.Multer.File): Promise<PostModel> {

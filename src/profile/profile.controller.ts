@@ -8,6 +8,6 @@ export class ProfileController {
     @Get(':username')
     async getUserByUsername(@Param('username') username: string) {
         const user = await this.usersService.findByUsername(username)
-        return { username: user.username }
+        return { username: user.username, avatar: user.avatar }
     }
 }
