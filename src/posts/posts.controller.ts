@@ -50,7 +50,7 @@ export class PostsController {
 
     @Get('username/:username')
     async getPostByUsername(@Param('username') username: string) {
-        return await this.postsService
+        return this.postsService.getPostByUsername(username)
     }
 
     @Put(':id')
