@@ -26,9 +26,6 @@ export class Post extends Document {
 
     @Prop()
     image: string
-
-    @Prop({ type: [{ type: ObjectId, ref: 'Comment' }] })
-    comments: Comment[];
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post)
