@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { unlink } from 'fs';
 import { Model } from 'mongoose';
+import { join } from 'path';
 import { Post } from 'src/models/post.model';
 
 @Injectable()
@@ -61,10 +63,17 @@ export class PostsService {
         return updatedPost
     }
 
-    async deletePost(postId: string): Promise<void> {
-        const result = await this.postModel.findByIdAndDelete(postId).exec()
-        if (!result) {
-            console.log('Post not found')
+    async deletePost(postId: string): Promise<Post> {
+        const post = await this.postModel.findById(postId).exec()
+        if (post) {
+            const rootPath = process.cwd()
+            const absolutePath = join(rootPath, post.image)
+            unlink(absolutePath, (error) => {
+                console.error(error)
+            })
+            return await this.postModel.findByIdAndDelete(postId).exec() 
+        } else {
+            console.log('Пост не найден')
         }
     }
 }
