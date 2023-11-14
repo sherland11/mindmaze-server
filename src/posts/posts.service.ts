@@ -23,18 +23,32 @@ export class PostsService {
         const filter: any = { $or: [{ title: regex }, { content: regex }] }
         
         if (topic) filter.topic = topic
+
+        let aggregationPipeline: any[] = [
+            { $match: filter }
+          ];
         
         let posts = this.postModel.find(filter)
 
         switch (sortBy) {
             case 'popular':
-                posts = posts.sort({ likes: -1 })
+                aggregationPipeline.push({
+                    $addFields: {
+                      likesCount: { $size: '$likes' }
+                    }
+                  });
+            
+                  aggregationPipeline.push({
+                    $sort: { likesCount: -1 }
+                  });
                 break
             case 'new':
-                posts = posts.sort({ date: -1 })
+                aggregationPipeline.push({
+                    $sort: { date: -1 }
+                });
         }
 
-        return posts.exec()
+        return this.postModel.aggregate(aggregationPipeline).exec()
 
     }
 
